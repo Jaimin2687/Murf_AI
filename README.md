@@ -34,7 +34,9 @@ Dev Tools: VS Code, Uvicorn, Git
 
 👨‍💻 Author
 Jaimin Parmar
+
 📚 2nd Year BTech CSE Student
+
 🌐 LinkedIn :- https://www.linkedin.com/in/jaimin-parmar-a4a62a332/
 
 ⭐ Stay Tuned!
