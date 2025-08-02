@@ -50,5 +50,3 @@ If you find this interesting, give it a ⭐ and follow my journey here and on Li
 🏁 License
 This project is open-source and free to use under the MIT License.
 
-Would you like me to also generate a stylish GitHub project banner or badge for this? Let me know!
-
