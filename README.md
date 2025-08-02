@@ -6,9 +6,13 @@ Over the next 30 days, I'll be building a complete AI-powered voice agent, task 
 This repository will evolve each day as new features are added.
  📁 Folder Structure
 your-voice-agent/
+
 ├── main.py # FastAPI backend
+
 └── static/
+
 ├── index.html # Frontend HTML
+
 └── script.js # Frontend JavaScript
 
 ## 🚀 Getting Started
