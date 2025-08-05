@@ -5,7 +5,48 @@ document.addEventListener("DOMContentLoaded", () => {
   const startButton = document.getElementById("start");
   const responseBox = document.getElementById("response");
 
-  // 🔹 For the pre-filled welcome voice generation using #start
+  // 🎤 Echo Bot
+  const startRecBtn = document.getElementById("start-recording");
+  const stopRecBtn = document.getElementById("stop-recording");
+  const echoAudio = document.getElementById("echo-audio");
+
+  let mediaRecorder;
+  let audioChunks = [];
+
+  if (startRecBtn && stopRecBtn && echoAudio) {
+    startRecBtn.addEventListener("click", async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        mediaRecorder = new MediaRecorder(stream);
+        audioChunks = [];
+
+        mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+        mediaRecorder.onstop = () => {
+          const blob = new Blob(audioChunks, { type: 'audio/webm' });
+          const audioURL = URL.createObjectURL(blob);
+          echoAudio.src = audioURL;
+          echoAudio.classList.remove("hidden");
+          echoAudio.play();
+        };
+
+        mediaRecorder.start();
+        startRecBtn.disabled = true;
+        stopRecBtn.disabled = false;
+      } catch (err) {
+        alert("Microphone access denied or not available.");
+      }
+    });
+
+    stopRecBtn.addEventListener("click", () => {
+      if (mediaRecorder && mediaRecorder.state !== "inactive") {
+        mediaRecorder.stop();
+        startRecBtn.disabled = false;
+        stopRecBtn.disabled = true;
+      }
+    });
+  }
+
+  // 🌀 Pre-filled welcome message
   if (startButton) {
     startButton.addEventListener("click", async () => {
       responseBox.classList.remove("hidden");
@@ -30,7 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // 🔹 For the custom text-to-speech input
+  // 📝 Custom TTS generation
   if (generateBtn) {
     generateBtn.addEventListener("click", async () => {
       const text = inputBox.value.trim();
@@ -58,18 +99,11 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
-});
-// 🔹 For the audio player controls
+
+  // Optional: Logging audio playback
   if (audioPlayer) {
-    audioPlayer.addEventListener("play", () => {
-      console.log("Audio is playing...");
-    });
-
-    audioPlayer.addEventListener("pause", () => {
-      console.log("Audio is paused.");
-    });
-
-    audioPlayer.addEventListener("ended", () => {
-      console.log("Audio playback has ended.");
-    });
+    audioPlayer.addEventListener("play", () => console.log("Audio is playing..."));
+    audioPlayer.addEventListener("pause", () => console.log("Audio paused."));
+    audioPlayer.addEventListener("ended", () => console.log("Audio ended."));
   }
+});

@@ -53,18 +53,32 @@
 
   <main class="w-full max-w-3xl mt-16 glass px-8 py-10 rounded-2xl shadow-2xl fade-in text-center">
     <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 logo-font mb-6">Speak to the Tides 🌬️</h1>
-    <p class="text-gray-600 text-lg mb-8">Type your thoughts and let AQUA flow your voice.</p>
+    <p class="text-gray-600 text-lg mb-8">Click below and let AQUA convert your thoughts into flowing sound.</p>
 
-    <!--  Text Area -->
-    <textarea id="text-input" rows="4" placeholder="What should AQUA say?" class="w-full p-4 rounded-lg border-2 border-cyan-300 shadow focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent resize-none mb-6 bg-white/60 text-gray-800 placeholder-gray-500"></textarea>
-
-    <!--  Generate Button -->
-    <button id="generate-btn" class="bg-gradient-to-tr from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-semibold px-6 py-3 rounded-full text-xl transition-all duration-300 shadow-lg">
-      🎤 Generate Voice
+    <button id="start" class="bg-gradient-to-tr from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-semibold px-6 py-3 rounded-full text-xl transition-all duration-300 shadow-lg mb-8">
+      💬 Let’s Flow
     </button>
 
-    <!--  Audio Player -->
-    <audio id="audio-player" controls class="mt-6 w-full rounded-lg shadow hidden"></audio>
+    <div id="response" class="mt-6 p-5 bg-white/70 glass rounded-xl text-lg text-gray-800 hidden fade-in border border-zinc-200 shadow">
+      Just a splash away from your voice...
+    </div>
+
+    <hr class="my-10 border-gray-300"/>
+
+    <h1 class="text-2xl font-semibold text-cyan-700 mb-4">📝 Custom Text-to-Speech</h1>
+    <input id="text-input" type="text" placeholder="Type your message here..." class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-400 mb-4">
+    <button id="generate-btn" class="bg-cyan-600 hover:bg-cyan-700 text-white px-6 py-2 rounded-full font-medium transition-all mb-6">🎙️ Generate Voice</button>
+    <audio id="audio-player" controls class="w-full mt-2 hidden"></audio>
+
+    <hr class="my-10 border-gray-300"/>
+
+    <h1 class="text-2xl font-semibold text-cyan-700 mb-4">🎧 Echo Bot</h1>
+    <p class="text-gray-600 mb-4">Record your voice and hear it echoed back to you!</p>
+    <div class="flex flex-col sm:flex-row justify-center gap-4 mb-4">
+      <button id="start-recording" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-full font-medium transition-all">🎤 Start Recording</button>
+      <button id="stop-recording" class="bg-rose-600 hover:bg-rose-700 text-white px-6 py-2 rounded-full font-medium transition-all" disabled>⏹️ Stop Recording</button>
+    </div>
+    <audio id="echo-audio" controls class="w-full mt-4 hidden"></audio>
   </main>
 
   <footer class="mt-auto py-6 text-sm text-gray-500 text-center">
