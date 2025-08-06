@@ -5,10 +5,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const startButton = document.getElementById("start");
   const responseBox = document.getElementById("response");
 
-  // 🎤 Echo Bot
   const startRecBtn = document.getElementById("start-recording");
   const stopRecBtn = document.getElementById("stop-recording");
   const echoAudio = document.getElementById("echo-audio");
+  const uploadStatus = document.getElementById("upload-status");
 
   let mediaRecorder;
   let audioChunks = [];
@@ -21,12 +21,28 @@ document.addEventListener("DOMContentLoaded", () => {
         audioChunks = [];
 
         mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
-        mediaRecorder.onstop = () => {
+        mediaRecorder.onstop = async () => {
           const blob = new Blob(audioChunks, { type: 'audio/webm' });
           const audioURL = URL.createObjectURL(blob);
           echoAudio.src = audioURL;
           echoAudio.classList.remove("hidden");
           echoAudio.play();
+
+          // Upload to server
+          const formData = new FormData();
+          formData.append("file", blob, "recording.webm");
+
+          uploadStatus.textContent = "Uploading...";
+          try {
+            const res = await axios.post("http://localhost:5000/upload-audio", formData, {
+              headers: {
+                "Content-Type": "multipart/form-data"
+              }
+            });
+            uploadStatus.textContent = `Uploaded: ${res.data.filename} (${res.data.size} bytes)`;
+          } catch (err) {
+            uploadStatus.textContent = "Upload failed.";
+          }
         };
 
         mediaRecorder.start();
@@ -46,20 +62,19 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // 🌀 Pre-filled welcome message
   if (startButton) {
     startButton.addEventListener("click", async () => {
       responseBox.classList.remove("hidden");
-      responseBox.textContent = "AQUA is preparing your voice... 🌊";
+      responseBox.textContent = "AQUA is preparing your voice... \ud83c\udf0a";
 
       try {
         const res = await axios.post("http://localhost:5000/server", {
-          text: "Hello there, I’m Aqua 🌊 — your voice agent. Let's dive into creativity!"
+          text: "Hello there, I\u2019m Aqua \ud83c\udf0a — your voice agent. Let's dive into creativity!"
         });
 
         const audioUrl = res.data.audioUrl;
         responseBox.innerHTML = `
-          <p class="mb-4 text-sky-800 font-semibold">Here's your generated voice 👇</p>
+          <p class="mb-4 text-sky-800 font-semibold">Here's your generated voice \ud83d\udc47</p>
           <audio controls class="w-full">
             <source src="${audioUrl}" type="audio/mpeg">
             Your browser does not support the audio element.
@@ -71,13 +86,12 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // 📝 Custom TTS generation
   if (generateBtn) {
     generateBtn.addEventListener("click", async () => {
       const text = inputBox.value.trim();
 
       if (!text) {
-        alert("🌊 Please enter something for AQUA to say.");
+        alert("\ud83c\udf0a Please enter something for AQUA to say.");
         return;
       }
 
@@ -91,16 +105,15 @@ document.addEventListener("DOMContentLoaded", () => {
           audioPlayer.classList.remove("hidden");
           audioPlayer.play();
         } else {
-          alert("🚫 Could not generate audio. Please try again.");
+          alert("\ud83d\udeab Could not generate audio. Please try again.");
         }
       } catch (error) {
-        console.error("⚠️ Error contacting server:", error);
-        alert("❌ An error occurred while generating audio.");
+        console.error("\u26a0\ufe0f Error contacting server:", error);
+        alert("\u274c An error occurred while generating audio.");
       }
     });
   }
 
-  // Optional: Logging audio playback
   if (audioPlayer) {
     audioPlayer.addEventListener("play", () => console.log("Audio is playing..."));
     audioPlayer.addEventListener("pause", () => console.log("Audio paused."));
